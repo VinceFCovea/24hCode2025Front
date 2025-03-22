@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Tile } from '../../models/tile.model';
-import { MondeService } from '../../services/monde.service';
+import { InfoMap } from '../../core/model/infoMap';
+import { MondeService } from '../../shared/services/monde.service';
 
 @Component({
   selector: 'app-map',
@@ -10,15 +10,26 @@ import { MondeService } from '../../services/monde.service';
 })
 export class MapComponent {
 
-  map: Tile[][] = [];
-  flatMap: Tile[] = [];
+  map: InfoMap[][] = [];
+  flatMap: InfoMap[] = [];
 
   constructor(private mondeService: MondeService) {}
 
   ngOnInit(): void {
-    this.mondeService.getMap().subscribe(data => {
-      this.map = data;
-      this.flatMap = this.map.flat();
+    this.mondeService.recupererInfosMap(0, 32, 0, 32).subscribe(data => {
+      this.map = this.transformTo2D(data);
+      this.flatMap = data;
     });
+  }
+
+  private transformTo2D(data: InfoMap[]): InfoMap[][] {
+    const size = 33;
+    const grid: InfoMap[][] = Array.from({ length: size }, () => []);
+    data.forEach(tile => {
+      if (tile.coordY < size && tile.coordX < size) {
+        grid[tile.coordY][tile.coordX] = tile;
+      }
+    });
+    return grid;
   }
 }
