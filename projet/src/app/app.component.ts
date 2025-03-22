@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
 
   constructor(
-    private readonly equipeService: EquipesService, 
+    private readonly equipeService: EquipesService,
     private readonly villageoisService: VillageoisService
   ) {}
 
@@ -44,31 +44,31 @@ export class AppComponent implements OnInit {
       // interval(12700).pipe(
       //   switchMap(() => this.villageoisService.demanderActionVillageois(NOTRE_ID_EQUIPE, '17e9cdb2-6bb1-484e-ad06-5f49c47e2034', demandeAction))
       // ).subscribe();
-      
+
 
 
       (async () =>
         {
             const app = new Application();
-        
+
             await app.init({ background: '#1099bb', resizeTo: window });
-        
+
             document.body.appendChild(app.canvas);
 
             const imagePath = 'assets/tiles/lac.png';
 
             loadTextures.config!.preferWorkers = false;
-            
+
             const texture = await Assets.load(imagePath);
 
             const bunny = new Sprite(texture);
-            
+
             app.stage.addChild(bunny);
 
             bunny.anchor.set(0.5);
-            
+
             bunny.x = app.screen.width / 2;
-          
+
             bunny.y = app.screen.height / 2;
 
 
