@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { InfoMap } from '../../core/model/infoMap';
 import { MondeService } from '../../shared/services/monde.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-map',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
