@@ -15,7 +15,7 @@ export class TileService {
     switch (biome.nom) {
       case 'Plaine':
         return `${prefixe}plaine.png`;
-      case 'Desert':
+      case 'Désert':
         return `${prefixe}desert.png`;
       case 'Lac':
         return `${prefixe}lac.png`;

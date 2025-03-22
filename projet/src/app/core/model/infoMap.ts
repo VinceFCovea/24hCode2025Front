@@ -11,11 +11,11 @@ export interface InfoMap {
     /**
      * Position horizontale de la case
      */
-    coordX: number;
+    coord_x: number;
     /**
      * Position vertical de la case
      */
-    coordY: number;
+    coord_y: number;
     biome: Biome;
     terrain: Terrain;
     batimentConstruit?: CaseBatiment;

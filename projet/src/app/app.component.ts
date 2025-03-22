@@ -5,27 +5,35 @@ import { NOTRE_ID_EQUIPE } from './core/constants/core.constants';
 import { VillageoisService } from './shared/services/villageois.service';
 import { DemandeAction } from './core/model/demandeAction';
 import { NomAction } from './core/model/nomAction';
-import { interval, switchMap } from 'rxjs';
+import { from, interval, switchMap } from 'rxjs';
 import { EquipeRessource } from './core/model/equipeRessource';
 import { CommonModule } from '@angular/common';
 import { Application, Assets, Sprite } from 'pixi.js';
 import { loadTextures } from 'pixi.js';
+import { MondeService } from './shared/services/monde.service';
+import { InfoMap } from './core/model/infoMap';
+import { TileService } from './shared/services/tile.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [ CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'projet';
   data!: string;
-  ressources!: Array<EquipeRessource>;;
+  ressources!: Array<EquipeRessource>;
+  app: any;
+  readonly TAILLE_TILE = 64;
+
 
 
   constructor(
     private readonly equipeService: EquipesService,
-    private readonly villageoisService: VillageoisService
+    private readonly villageoisService: VillageoisService,
+    private readonly mondeService: MondeService,
+    private readonly tileService: TileService
   ) {}
 
     ngOnInit(): void {
@@ -41,40 +49,49 @@ export class AppComponent implements OnInit {
         reference: 'CHARBON'
       };
 
-      // interval(12700).pipe(
-      //   switchMap(() => this.villageoisService.demanderActionVillageois(NOTRE_ID_EQUIPE, '17e9cdb2-6bb1-484e-ad06-5f49c47e2034', demandeAction))
-      // ).subscribe();
+      this.initContext();
+    }
 
 
+    initContext() {
+      this.app = new Application();
 
-      (async () =>
-        {
-            const app = new Application();
+      from(this.app.init({ background: '#1099bb'})).subscribe(
+        () => {
+          document.body.appendChild(this.app.canvas);
+          this.afficherMap();
+        }
+      );
+    }
 
-            await app.init({ background: '#1099bb', resizeTo: window });
+    afficherMap() {
+      this.mondeService.recupererInfosMap(0, 10, 0, 0).subscribe(infosMap => {
+        infosMap.forEach(infoMap => {
+          this.afficherInfoMap(infoMap);
+        })
+        });
+    }
 
-            document.body.appendChild(app.canvas);
+    afficherInfoMap(infoMap: InfoMap) {
+      const biomeImagePath = this.tileService.determinerTilePourBiome(infoMap.biome);
 
-            const imagePath = 'assets/tiles/lac.png';
-
-            loadTextures.config!.preferWorkers = false;
-
-            const texture = await Assets.load(imagePath);
-
-            const bunny = new Sprite(texture);
-
-            app.stage.addChild(bunny);
-
-            bunny.anchor.set(0.5);
-
-            bunny.x = app.screen.width / 2;
-
-            bunny.y = app.screen.height / 2;
-
-
-        })();
+      if (!!biomeImagePath) {
+        from(Assets.load(biomeImagePath)).subscribe(
+          texture => {
+            const biome = new Sprite(texture);
+            this.app.stage.addChild(biome);
+            biome.height = this.TAILLE_TILE;
+            biome.width = this.TAILLE_TILE;
+            biome.x = infoMap.coord_x * this.TAILLE_TILE;
+            biome.y = infoMap.coord_y * this.TAILLE_TILE;
+          }
+        );
+      }
 
 
     }
+
+
+
 
 }
