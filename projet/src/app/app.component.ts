@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { EquipesService } from './shared/services/equipes.service';
+import { NOTRE_ID_EQUIPE } from './core/constants/core.constants';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +11,14 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'projet';
+  data!: string;
+
+  constructor(private readonly equipeService: EquipesService) {
+    this.equipeService.recupererEquipe(NOTRE_ID_EQUIPE).subscribe(
+      (equipe) => {
+        this.data = equipe.nom;
+      }
+    );
+  }
+
 }
