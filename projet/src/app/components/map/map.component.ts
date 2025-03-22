@@ -194,6 +194,11 @@ export class MapComponent implements OnInit {
                               infos += `\n${ressource.ressource.nom} : ${ressource.quantite}`;
                             }
 
+                            const villageois = this.villageoisEquipePerso.find(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
+                            if (villageois) {
+                              infos += `\nVillageois : ${villageois.idVillageois}`;
+                            }
+
                             alert(infos);
                           });
 
