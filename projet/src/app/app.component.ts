@@ -13,6 +13,7 @@ import { InfoMap } from './core/model/infoMap';
 import { TileService } from './shared/services/tile.service';
 import { TextureChargee } from './core/model/texture-chargee';
 import { Villageois } from './core/model/villageois';
+import { Equipe } from './core/model/equipe';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +27,11 @@ export class AppComponent implements OnInit {
   ressources!: Array<EquipeRessource>;
   app: any;
   readonly TAILLE_TILE = 64;
+  readonly INTERVALLE_REFRESH = 12500;
 
   texturesChargees: TextureChargee[] = [];
   villageoisEquipePerso: Villageois[] = [];
+  equipes: any[] = [];
 
 
 
@@ -40,12 +43,8 @@ export class AppComponent implements OnInit {
   ) {}
 
     ngOnInit(): void {
-      this.equipeService.recupererEquipe(NOTRE_ID_EQUIPE).subscribe(
-        (equipe) => {
-          this.data = equipe.nom;
-          this.ressources = equipe.ressources!;
-        }
-      );
+      this.recupererInfosResources().subscribe();
+      this.recupererInfosEquipes().subscribe();
 
       const demandeAction: DemandeAction = {
         action: NomAction.RECOLTER,
@@ -53,6 +52,25 @@ export class AppComponent implements OnInit {
       };
 
       this.initContext();
+    }
+
+    recupererInfosEquipes() {
+      return this.equipeService.recupererEquipes().pipe(
+        tap(equipes => {
+          this.equipes = equipes.map(equipe => {return {nom: `${equipe.nom} [${equipe.type}]`, score: equipe?.ressources?.find(res => res.ressource.nom === 'POINT')?.quantite}});
+          this.equipes.sort((a, b) => b.score - a.score);
+        })
+      );
+    }
+
+    recupererInfosResources() {
+      return this.equipeService.recupererEquipe(NOTRE_ID_EQUIPE).pipe(
+        tap(
+        (equipe) => {
+          this.data = equipe.nom;
+          this.ressources = equipe.ressources!;
+        }
+      ));
     }
 
 
@@ -68,7 +86,7 @@ export class AppComponent implements OnInit {
         })
       ).subscribe(
         () => {
-          interval(12500).pipe(
+          interval(this.INTERVALLE_REFRESH).pipe(
             tap(_ => {
               this.afficherMap();
             })

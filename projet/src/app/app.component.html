@@ -11,6 +11,14 @@
     </li>
   </ul>
 
+  <p>Equipes</p>
+
+  <ul>
+    <li *ngFor="let equipe of equipes">
+      {{equipe.nom}} : {{equipe.score}}
+    </li>
+  </ul>
+
   <p>Actions à réaliser</p>
   <form class="form-action">
     <select>
@@ -23,7 +31,5 @@
     </select>
     <button type="submit">Lancer l'action</button>
   </form>
-
-  
 </div>
 
