@@ -25,13 +25,14 @@ export class MapComponent {
   }
 
   private transformTo2D(data: InfoMap[]): InfoMap[][] {
-    const size = 33;
-    const grid: InfoMap[][] = Array.from({ length: size }, () => []);
-    data.forEach(tile => {
-      if (tile.coordY < size && tile.coordX < size) {
-        grid[tile.coordY][tile.coordX] = tile;
-      }
-    });
-    return grid;
+    // const size = 33;
+    // const grid: InfoMap[][] = Array.from({ length: size }, () => []);
+    // data.forEach(tile => {
+    //   if (tile.coordY < size && tile.coordX < size) {
+    //     grid[tile.coordY][tile.coordX] = tile;
+    //   }
+    // });
+    // return grid;
+    return [];
   }
 }

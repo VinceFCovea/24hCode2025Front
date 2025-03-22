@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
     initContext() {
       this.app = new Application();
 
-      from(this.app.init({ background: '#1099bb'})).subscribe(
+      from(this.app.init({ background: '#1099bb', resizeTo: window})).subscribe(
         () => {
           document.body.appendChild(this.app.canvas);
           this.afficherMap();
@@ -73,6 +73,9 @@ export class AppComponent implements OnInit {
     }
 
     afficherInfoMap(infoMap: InfoMap) {
+
+      // TODO : optimisation pour éviter de charger plusieurs fois la même texture
+
       const biomeImagePath = this.tileService.determinerTilePourBiome(infoMap.biome);
 
       if (!!biomeImagePath) {
@@ -84,6 +87,40 @@ export class AppComponent implements OnInit {
             biome.width = this.TAILLE_TILE;
             biome.x = infoMap.coord_x * this.TAILLE_TILE;
             biome.y = infoMap.coord_y * this.TAILLE_TILE;
+
+            const terrainImagePath = this.tileService.determinerTilePourTerrain(infoMap.terrain);
+            if (!!terrainImagePath) {
+              from(Assets.load(terrainImagePath)).subscribe(
+                texture => {
+                  const terrain = new Sprite(texture);
+                  this.app.stage.addChild(terrain);
+                  terrain.height = this.TAILLE_TILE;
+                  terrain.width = this.TAILLE_TILE;
+                  terrain.x = infoMap.coord_x * this.TAILLE_TILE;
+                  terrain.y = infoMap.coord_y * this.TAILLE_TILE;
+
+                  if (infoMap.batimentConstruit) {
+                    const batimentImagePath = this.tileService.determinerTilePourBatiment(infoMap.batimentConstruit.detailBatiment);
+
+                    if (!!batimentImagePath) {
+                      from(Assets.load(batimentImagePath)).subscribe(
+                        texture => {
+                          const batiment = new Sprite(texture);
+                          this.app.stage.addChild(batiment);
+                          batiment.height = this.TAILLE_TILE;
+                          batiment.width = this.TAILLE_TILE;
+                          batiment.x = infoMap.coord_x * this.TAILLE_TILE;
+                          batiment.y = infoMap.coord_y * this.TAILLE_TILE;
+                        }
+                      );
+                    }
+                  }
+
+                }
+              );
+            }
+
+
           }
         );
       }
