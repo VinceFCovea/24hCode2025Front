@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { VillageoisService } from '../shared/services/villageois.service';
-import { villageois } from '../mocks/villagers';
-import { NOTRE_ID_EQUIPE } from '../core/constants/core.constants';
+import { VillageoisService } from '../../../shared/services/villageois.service';
+import { villageois } from '../../../mocks/villagers';
+import { NOTRE_ID_EQUIPE } from '../../../core/constants/core.constants';
 import { log } from 'console';
-import { Villageois } from '../core/model/villageois';
+import { Villageois } from '../../../core/model/villageois';
 import { CommonModule } from '@angular/common';
 
 @Component({

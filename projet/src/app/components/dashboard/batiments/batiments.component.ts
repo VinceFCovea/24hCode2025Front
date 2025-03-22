@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { MondeService } from '../shared/services/monde.service';
-import { CaseBatiment } from '../core/model/caseBatiment';
-import { BatimentsService } from '../shared/services/batiments.service';
-import { InfoMap } from '../core/model/infoMap';
-import { NOTRE_ID_EQUIPE } from '../core/constants/core.constants';
+import { MondeService } from '../../../shared/services/monde.service';
+import { CaseBatiment } from '../../../core/model/caseBatiment';
+import { BatimentsService } from '../../../shared/services/batiments.service';
+import { InfoMap } from '../../../core/model/infoMap';
+import { NOTRE_ID_EQUIPE } from '../../../core/constants/core.constants';
 import { CommonModule } from '@angular/common';
 import { log } from 'console';
 
@@ -24,13 +24,13 @@ export class BatimentsComponent {
   ngOnInit() {
       for (let i = 0; i < 33; i++) {
         this.mondeService.recupererInfosMap(0, 32, i, i).subscribe(infosMap => {
-          const batiments = infosMap.filter(infoMap => 
+          const batiments = infosMap.filter(infoMap =>
             infoMap.batiment_construit && infoMap.batiment_construit.proprietaire.idEquipe === this.monEquipeId
-          );  
+          );
           this.infoMap = this.infoMap ? [...this.infoMap, ...batiments] : batiments;
         });
       }
-      
+
   }
 
 
