@@ -83,7 +83,7 @@ export class TileService {
       case NomBatiment.PUITSDECARBONE:
         return `${prefixe}puits_de_carbone.png`;
       case NomBatiment.REACTEURAFUSIONNUCLEAIRE:
-        return `${prefixe}reacteur_a_fusion_nucleraire.png`;
+        return `${prefixe}reacteur_a_fusion_nucleaire.png`;
       case NomBatiment.SCIERIE:
         return `${prefixe}scierie.png`;
       case NomBatiment.THEATRE:
