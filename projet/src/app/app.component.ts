@@ -108,13 +108,13 @@ export class AppComponent implements OnInit {
 
     private afficherSprite(infoMap: InfoMap, imagePath: string): Observable<any> {
       if (!!imagePath) {
-        const texturePreChargee = this.texturesChargees.find(textureChargee => textureChargee.nomImage === imagePath);
+        const texturePreChargee = this.texturesChargees.find(textureChargee => textureChargee.nomImage === imagePath)?.texture;
         const texture$ = !!texturePreChargee ? of(texturePreChargee) : from(Assets.load(imagePath));
 
         return texture$.pipe(
           tap(
             texture => {
-              if (!this.texturesChargees.find(textureChargee => textureChargee.nomImage === imagePath)) {
+              if (!texturePreChargee) {
                 this.texturesChargees.push({nomImage: imagePath, texture});
               }
               const sprite = new Sprite({texture});
