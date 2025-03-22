@@ -11,14 +11,14 @@ export interface InfoMap {
     /**
      * Position horizontale de la case
      */
-    coordX: number;
+    coord_x: number;
     /**
      * Position vertical de la case
      */
-    coordY: number;
+    coord_y: number;
     biome: Biome;
     terrain: Terrain;
-    batimentConstruit?: CaseBatiment;
+    batiment_construit?: CaseBatiment;
     /**
      * Un indicateur qui indique si case est accessible (construction)
      */

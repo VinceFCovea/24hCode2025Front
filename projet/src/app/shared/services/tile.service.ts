@@ -15,7 +15,7 @@ export class TileService {
     switch (biome.nom) {
       case 'Plaine':
         return `${prefixe}plaine.png`;
-      case 'Desert':
+      case 'Désert':
         return `${prefixe}desert.png`;
       case 'Lac':
         return `${prefixe}lac.png`;
@@ -26,14 +26,14 @@ export class TileService {
 
 
   recupererTileVillageois(): string {
-    return 'assets/villagers/villageois.png';
+    return 'assets/villagers/villager.png';
   }
 
 
-  determinerTilePourBatiment(batiment: Batiment): string {
+  determinerTilePourBatiment(batiment: Batiment | undefined): string {
     const prefixe = 'assets/buildings/';
 
-    switch (batiment.type) {
+    switch (batiment?.type) {
       case NomBatiment.ATELIERDECHARBONNIER:
         return `${prefixe}atelier_de_charbonnier.png`;
       case NomBatiment.ATELIERDETAILLEDEPIERRE:
