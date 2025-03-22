@@ -11,6 +11,20 @@
     </li>
   </ul>
 
+  <p>Actions à réaliser</p>
+  <form class="form-action">
+    <select>
+      <option value="RECOLTER">Récolter</option>
+      <option value="CONTRUIRE">Construire</option>
+    </select>
+    <select >
+      <option *ngFor="let ressource of ressources" value="{{ressource.ressource.nom}}">{{ressource.ressource.nom}}</option>
+      <option value="BATIMENT">Bâtiment</option>
+    </select>
+    <button type="submit">Lancer l'action</button>
+  </form>
+
+  
   <app-map></app-map>
 
 </div>
