@@ -52,10 +52,12 @@
       "Segoe UI Symbol";
       align-items: center;
       justify-content: center;
+      margin-bottom: 2%;
   }
 
   .ressources {
     display: flex;
+    margin-bottom: 2%;
 
   }
 
@@ -63,7 +65,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: azure;
     padding: 1%;
     font-size: 1.125rem;
     font-weight: 500;
@@ -71,13 +72,41 @@
   }
 
   .ressources {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 10px;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: azure;
+
+  }
+  
+  .title {
+    font-size: 14px;
+    color: gray;
+  }
+  
+  .value {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    margin-top: 5px;
   }
 
-  .ressource {
-    display: flex;
-    margin: 1%;
-    padding: 1%;
+  .positive {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .negative {
+    color: red;
+    font-weight: bold;
   }
 
 

@@ -15,11 +15,12 @@ import { InfoMap } from './core/model/infoMap';
 import { TileService } from './shared/services/tile.service';
 import { TextureChargee } from './core/model/texture-chargee';
 import { Villageois } from './core/model/villageois';
+import { BatimentsComponent } from './batiments/batiments.component';
 
 
 @Component({
   selector: 'app-root',
-  imports: [ CommonModule, VillageoisComponent],
+  imports: [ CommonModule, VillageoisComponent, BatimentsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -155,7 +156,7 @@ export class AppComponent implements OnInit {
 
 
 
-    afficherVillageoisSiNecessaire(infoMap: InfoMap) {
+   afficherVillageoisSiNecessaire(infoMap: InfoMap) {
       this.villageoisEquipePerso.forEach(villageois => {
         if (villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y) {
           const villageoisImagePath = this.tileService.recupererTileVillageois();

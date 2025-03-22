@@ -1,15 +1,25 @@
 <div class="header"><p>Equipe {{data}}</p></div>
 
-<div class="ressources-header">Ressources</div>
-
 <div class="ressources">
-  <div class="ressource" *ngFor="let ressource of ressources">
-    {{ressource.ressource.nom}} : {{ressource.quantite}}
+  <div class="card" *ngFor="let ressource of ressources">
+    <div class="title">{{ ressource.ressource.nom }}</div>
+    <p 
+      class="value" 
+      [ngClass]="{
+        'positive': (ressource.ressource.nom === 'POINT' && ressource.quantite > 0) || 
+                    (ressource.ressource.nom === 'POLLUTION' && ressource.quantite < 0),
+        'negative': (ressource.ressource.nom === 'POINT' && ressource.quantite < 0) || 
+                    (ressource.ressource.nom === 'POLLUTION' && ressource.quantite > 0)
+      }"
+    >
+      {{ ressource.quantite }}
+    </p>
   </div>
 </div>
 
-<div class="ressources-header">Villageois</div>
-
 <app-villageois></app-villageois>
+
+<app-batiments></app-batiments>
+
 
 

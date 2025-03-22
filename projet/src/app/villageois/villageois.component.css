@@ -1,9 +1,40 @@
 .ressources {
-    display: flex;
-  }
-  
-.ressource {
-    display: flex;
-    margin: 1%;
-    padding: 1%;
-  }
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 20px; 
+  margin-bottom: 2%;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  text-align: center;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.position {
+  font-size: 14px;
+  color: gray;
+  margin-top: 5px;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.status .yes {
+  color: green;
+}
+
+.status .no {
+  color: red;
+}
