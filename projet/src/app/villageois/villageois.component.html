@@ -1,0 +1,14 @@
+<div class="ressources">
+  <div class="card" *ngFor="let v of listeVillageois">
+      <div class="title">{{ v.nom }}</div>
+      <div class="position">
+        Position X = {{ v.positionX }}<br/>Position Y = {{ v.positionY }}
+      </div>
+      <div class="status">
+        Disponible : <span [ngClass]="v.disponible ? 'yes' : 'no'">
+          {{ v.disponible ? 'Oui' : 'Non' }}
+        </span>
+      </div>
+  </div>
+</div>
+

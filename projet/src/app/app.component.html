@@ -1,9 +1,23 @@
-<p>Coucou</p>
-<p>Notre équipe : {{data}}</p>
+<div class="header"><p>Equipe {{data}}</p></div>
 
+<div class="ressources">
+  <div class="card" *ngFor="let ressource of ressources">
+    <div class="title">{{ ressource.ressource.nom }}</div>
+    <p
+      class="value"
+      [ngClass]="{
+        'positive': (ressource.ressource.nom === 'POINT' && ressource.quantite > 0) ||
+                    (ressource.ressource.nom === 'POLLUTION' && ressource.quantite < 0),
+        'negative': (ressource.ressource.nom === 'POINT' && ressource.quantite < 0) ||
+                    (ressource.ressource.nom === 'POLLUTION' && ressource.quantite > 0)
+      }"
+    >
+      {{ ressource.quantite }}
+    </p>
+  </div>
 <div>
 
-  <p>Ressources</p>
+  <!-- <p>Ressources</p>
 
   <ul>
     <li *ngFor="let ressource of ressources">
@@ -18,20 +32,13 @@
       {{equipe.nom}} : {{equipe.score}}
     </li>
   </ul>
-
-  <p>Actions à réaliser</p>
-  <form class="form-action">
-    <select>
-      <option value="RECOLTER">Récolter</option>
-      <option value="CONTRUIRE">Construire</option>
-    </select>
-    <select >
-      <option *ngFor="let ressource of ressources" value="{{ressource.ressource.nom}}">{{ressource.ressource.nom}}</option>
-      <option value="BATIMENT">Bâtiment</option>
-    </select>
-    <button type="submit">Lancer l'action</button>
-  </form>
-</div>
+</div> -->
 
 <router-outlet></router-outlet>
+
+<app-villageois></app-villageois>
+
+<app-batiments></app-batiments>
+
+
 

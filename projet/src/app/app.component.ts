@@ -10,13 +10,17 @@ import { CommonModule } from '@angular/common';
 import { MondeService } from './shared/services/monde.service';
 import { TileService } from './shared/services/tile.service';
 import { RouterOutlet } from '@angular/router';
+import { BatimentsComponent } from './batiments/batiments.component';
+import { VillageoisComponent } from './villageois/villageois.component';
 
 @Component({
   selector: 'app-root',
-  imports: [ CommonModule, RouterOutlet],
+  imports: [ CommonModule, RouterOutlet, BatimentsComponent, VillageoisComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
+
 export class AppComponent implements OnInit {
   title = 'projet';
   data!: string;
