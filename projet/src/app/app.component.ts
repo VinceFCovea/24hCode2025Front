@@ -183,7 +183,13 @@ export class AppComponent implements OnInit {
                   sprite.filters = [new OutlineFilter({thickness: colorHex === 0x000000 ? 1 : 2, color: colorHex})];
 
                   sprite.on('click', () => {
-                    alert(`Coordonnées : ${infoMap.coord_x},${infoMap.coord_y}`);
+                    let infos = `Coordonnées : ${infoMap.coord_x},${infoMap.coord_y}`;
+
+                    for (const ressource of infoMap.ressources) {
+                      infos += `\n${ressource.ressource.nom} : ${ressource.quantite}`;
+                    }
+
+                    alert(infos);
                   });
 
                   sprite.on('mouseover', () => {
