@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { InfoMap } from '../../core/model/infoMap';
 import { MondeService } from '../../shared/services/monde.service';
 import { CommonModule } from '@angular/common';
@@ -12,10 +12,7 @@ import { VillageoisService } from '../../shared/services/villageois.service';
 import { TileService } from '../../shared/services/tile.service';
 import { OutlineFilter } from 'pixi-filters';
 import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogTitle,
-  MatDialogContent,
+  MatDialog
 } from '@angular/material/dialog';
 import { ModalComponent } from './modal/modal.component';
 
@@ -75,6 +72,14 @@ export class MapComponent implements OnInit {
       0x204509
     ];
 
+    viewportTransform = {
+      x: 0,
+      y: 0,
+      scale: 1
+    }
+    previousX = 0;
+    previousY = 0;
+
     constructor(
         private readonly equipeService: EquipesService,
         private readonly villageoisService: VillageoisService,
@@ -90,6 +95,29 @@ export class MapComponent implements OnInit {
       });
 
     }
+
+    @HostListener('window:wheel', ['$event'])
+    zoom(event: any) {
+      const localX = event.clientX;
+      const localY = event.clientY;
+
+      this.viewportTransform.x += localX - this.previousX;
+      this.viewportTransform.y += localY - this.previousY;
+
+      this.previousX = localX;
+      this.previousY = localY;
+
+      if (event.deltaY < 0) {
+        this.viewportTransform.scale *= 1.5;
+      } else if (event.deltaY > 0) {
+        this.viewportTransform.scale /= 1.5;
+      }
+
+      this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
+      // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
+    }
+
+
 
     recupererInfosEquipes() {
       return this.equipeService.recupererEquipes().pipe(
