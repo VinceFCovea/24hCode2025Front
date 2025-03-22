@@ -30,10 +30,10 @@ export class TileService {
   }
 
 
-  determinerTilePourBatiment(batiment: Batiment): string {
+  determinerTilePourBatiment(batiment: Batiment | undefined): string {
     const prefixe = 'assets/buildings/';
 
-    switch (batiment.type) {
+    switch (batiment?.type) {
       case NomBatiment.ATELIERDECHARBONNIER:
         return `${prefixe}atelier_de_charbonnier.png`;
       case NomBatiment.ATELIERDETAILLEDEPIERRE:
