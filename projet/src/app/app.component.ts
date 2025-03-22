@@ -21,8 +21,10 @@ export class AppComponent implements OnInit {
   data!: string;
   ressources!: Array<EquipeRessource>;;
 
-  constructor(private readonly equipeService: EquipesService, private readonly villageoisService: VillageoisService) {
-  }
+  constructor(
+    private readonly equipeService: EquipesService, 
+    private readonly villageoisService: VillageoisService
+  ) {}
 
     ngOnInit(): void {
       this.equipeService.recupererEquipe(NOTRE_ID_EQUIPE).subscribe(
@@ -40,10 +42,9 @@ export class AppComponent implements OnInit {
       // interval(12700).pipe(
       //   switchMap(() => this.villageoisService.demanderActionVillageois(NOTRE_ID_EQUIPE, '17e9cdb2-6bb1-484e-ad06-5f49c47e2034', demandeAction))
       // ).subscribe();
-
-
-
     }
+
+  
 
 
 }
