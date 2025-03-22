@@ -1,2 +1,17 @@
 <p>Coucou</p>
 <p>Notre équipe : {{data}}</p>
+
+<div>
+
+  <p>Ressources</p>
+
+  <ul>
+    <li *ngFor="let ressource of ressources">
+      {{ressource.ressource.nom}} : {{ressource.quantite}}
+    </li>
+  </ul>
+
+
+
+</div>
+
