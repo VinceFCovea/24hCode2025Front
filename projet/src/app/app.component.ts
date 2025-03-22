@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { EquipesService } from './shared/services/equipes.service';
 import { NOTRE_ID_EQUIPE } from './core/constants/core.constants';
 import { VillageoisService } from './shared/services/villageois.service';
@@ -8,8 +7,7 @@ import { NomAction } from './core/model/nomAction';
 import { from, interval, switchMap } from 'rxjs';
 import { EquipeRessource } from './core/model/equipeRessource';
 import { CommonModule } from '@angular/common';
-import { Application, Assets, Sprite } from 'pixi.js';
-import { loadTextures } from 'pixi.js';
+import { Application, Assets, Sprite, Text } from 'pixi.js';
 import { MondeService } from './shared/services/monde.service';
 import { InfoMap } from './core/model/infoMap';
 import { TileService } from './shared/services/tile.service';
@@ -56,7 +54,7 @@ export class AppComponent implements OnInit {
     initContext() {
       this.app = new Application();
 
-      from(this.app.init({ background: '#1099bb', resizeTo: window})).subscribe(
+      from(this.app.init({ background: '#1099bb', width: 2112, height: 2112})).subscribe(
         () => {
           document.body.appendChild(this.app.canvas);
           this.afficherMap();
@@ -65,11 +63,21 @@ export class AppComponent implements OnInit {
     }
 
     afficherMap() {
-      this.mondeService.recupererInfosMap(0, 10, 0, 0).subscribe(infosMap => {
-        infosMap.forEach(infoMap => {
-          this.afficherInfoMap(infoMap);
-        })
-        });
+
+      for (let i = 0; i < 33; i++) {
+        this.mondeService.recupererInfosMap(0, 32, i, i).subscribe(infosMap => {
+          infosMap.forEach(infoMap => {
+            this.afficherInfoMap(infoMap);
+
+            // const text = new Text({
+            //   text: `${infoMap.coord_x},${infoMap.coord_y}`,});
+            // text.x = infoMap.coord_x * this.TAILLE_TILE;
+            // text.y = 64;
+            // this.app.stage.addChild(text);
+          })
+          });
+      }
+
     }
 
     afficherInfoMap(infoMap: InfoMap) {
@@ -81,7 +89,7 @@ export class AppComponent implements OnInit {
       if (!!biomeImagePath) {
         from(Assets.load(biomeImagePath)).subscribe(
           texture => {
-            const biome = new Sprite(texture);
+            const biome = new Sprite({texture});
             this.app.stage.addChild(biome);
             biome.height = this.TAILLE_TILE;
             biome.width = this.TAILLE_TILE;
@@ -99,8 +107,8 @@ export class AppComponent implements OnInit {
                   terrain.x = infoMap.coord_x * this.TAILLE_TILE;
                   terrain.y = infoMap.coord_y * this.TAILLE_TILE;
 
-                  if (infoMap.batimentConstruit) {
-                    const batimentImagePath = this.tileService.determinerTilePourBatiment(infoMap.batimentConstruit.detailBatiment);
+                  if (infoMap.batiment_construit) {
+                    const batimentImagePath = this.tileService.determinerTilePourBatiment(infoMap.batiment_construit.detailBatiment);
 
                     if (!!batimentImagePath) {
                       from(Assets.load(batimentImagePath)).subscribe(
@@ -111,10 +119,16 @@ export class AppComponent implements OnInit {
                           batiment.width = this.TAILLE_TILE;
                           batiment.x = infoMap.coord_x * this.TAILLE_TILE;
                           batiment.y = infoMap.coord_y * this.TAILLE_TILE;
+
+                          this.afficherVillageoisSiNecessaire(infoMap);
                         }
                       );
                     }
+                  } else {
+                    this.afficherVillageoisSiNecessaire(infoMap);
                   }
+
+
 
                 }
               );
@@ -129,6 +143,27 @@ export class AppComponent implements OnInit {
     }
 
 
+
+    afficherVillageoisSiNecessaire(infoMap: InfoMap) {
+      this.villageoisService.recupererListeVillageoisEquipe(NOTRE_ID_EQUIPE).subscribe(
+        villageois => {
+          villageois.forEach(villageois => {
+            if (villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y) {
+              const villageoisImagePath = this.tileService.recupererTileVillageois();
+              from(Assets.load(villageoisImagePath)).subscribe(
+                texture => {
+                  const villageoisSprite = new Sprite(texture);
+                  this.app.stage.addChild(villageoisSprite);
+                  villageoisSprite.height = this.TAILLE_TILE;
+                  villageoisSprite.width = this.TAILLE_TILE;
+                  villageoisSprite.x = infoMap.coord_x * this.TAILLE_TILE;
+                  villageoisSprite.y = infoMap.coord_y * this.TAILLE_TILE;
+                }
+              );
+            }
+          });
+        });
+    }
 
 
 }

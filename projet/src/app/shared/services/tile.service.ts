@@ -26,7 +26,7 @@ export class TileService {
 
 
   recupererTileVillageois(): string {
-    return 'assets/villagers/villageois.png';
+    return 'assets/villagers/villager.png';
   }
 
 

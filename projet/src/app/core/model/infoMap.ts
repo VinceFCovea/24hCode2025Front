@@ -18,7 +18,7 @@ export interface InfoMap {
     coord_y: number;
     biome: Biome;
     terrain: Terrain;
-    batimentConstruit?: CaseBatiment;
+    batiment_construit?: CaseBatiment;
     /**
      * Un indicateur qui indique si case est accessible (construction)
      */
