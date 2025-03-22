@@ -1,0 +1,9 @@
+<div>
+  <p>Equipes</p>
+
+  <ul>
+    <li *ngFor="let equipe of equipes" [style.color]="equipe.color">
+      {{equipe.nom}} : {{equipe.score}}
+    </li>
+  </ul>
+</div>

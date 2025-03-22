@@ -8,10 +8,11 @@ import { DemandeAction } from "../../core/model/demandeAction";
 import { tap } from "rxjs";
 import { NOTRE_ID_EQUIPE } from "../../core/constants/core.constants";
 import { NomAction } from "../../core/model/nomAction";
+import { EquipesComponent } from "./equipes/equipes.component";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, VillageoisComponent, BatimentsComponent],
+  imports: [CommonModule, VillageoisComponent, BatimentsComponent, EquipesComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   standalone: true

@@ -183,7 +183,8 @@ export class MapComponent implements OnInit {
                       const sprite = new Sprite({texture, interactive: true});
                       if (sprite) {
                         if (true) { // outlineNecessaire
-                          const colorHex = this.equipes.find(equipe => equipe.id === infoMap.batiment_construit?.proprietaire?.idEquipe)?.colorHex || 0x000000;
+                          const equipeProprietaire = this.equipes.find(equipe => equipe.id === infoMap.batiment_construit?.proprietaire?.idEquipe);
+                          const colorHex = equipeProprietaire?.colorHex || 0x000000;
 
                           sprite.filters = [new OutlineFilter({thickness: colorHex === 0x000000 ? 1 : 2, color: colorHex})];
 
@@ -197,6 +198,10 @@ export class MapComponent implements OnInit {
                             const villageois = this.villageoisEquipePerso.find(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
                             if (villageois) {
                               infos += `\nVillageois : ${villageois.idVillageois}`;
+                            }
+
+                            if (equipeProprietaire) {
+                              infos += `\nEquipe propriétaire : ${equipeProprietaire.nom}`;
                             }
 
                             alert(infos);
