@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { InfoMap } from '../../core/model/infoMap';
 import { MondeService } from '../../shared/services/monde.service';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,13 @@ import { EquipesService } from '../../shared/services/equipes.service';
 import { VillageoisService } from '../../shared/services/villageois.service';
 import { TileService } from '../../shared/services/tile.service';
 import { OutlineFilter } from 'pixi-filters';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+} from '@angular/material/dialog';
+import { ModalComponent } from './modal/modal.component';
 
 
 @Component({
@@ -23,6 +30,8 @@ export class MapComponent implements OnInit {
 
   app: any;
   readonly TAILLE_TILE = 64;
+
+  dialog = inject(MatDialog);
 
   texturesChargees: TextureChargee[] = [];
     villageoisEquipePerso: Villageois[] = [];
@@ -189,22 +198,27 @@ export class MapComponent implements OnInit {
                           sprite.filters = [new OutlineFilter({thickness: colorHex === 0x000000 ? 1 : 2, color: colorHex})];
 
                           sprite.on('click', () => {
-                            let infos = `Coordonnées : ${infoMap.coord_x},${infoMap.coord_y}`;
+                            let infos = `<p>Coordonnées : ${infoMap.coord_x},${infoMap.coord_y}<p>`;
 
                             for (const ressource of infoMap.ressources) {
-                              infos += `\n${ressource.ressource.nom} : ${ressource.quantite}`;
+                              infos += `<p>${ressource.ressource.nom} : ${ressource.quantite}</p>`;
                             }
 
                             const villageois = this.villageoisEquipePerso.find(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
                             if (villageois) {
-                              infos += `\nVillageois : ${villageois.idVillageois}`;
+                              infos += `<p>Villageois : ${villageois.idVillageois}</p>`;
                             }
 
                             if (equipeProprietaire) {
-                              infos += `\nEquipe propriétaire : ${equipeProprietaire.nom}`;
+                              infos += `<p>Equipe propriétaire : ${equipeProprietaire.nom}</p>`;
                             }
 
-                            alert(infos);
+                            if (infoMap.batiment_construit) {
+                              infos += `<p>Bâtiment : ${infoMap.batiment_construit.detailBatiment.type}</p>`;
+                            }
+
+                            this.openDialog(infos);
+                            // alert(infos);
                           });
 
                           sprite.on('mouseover', () => {
@@ -226,6 +240,14 @@ export class MapComponent implements OnInit {
               } else {
                 return of(null);
               }
+            }
+
+            openDialog(infos: string) {
+              this.dialog.open(ModalComponent, {
+                data: {
+                  infos
+                },
+              });
             }
 
 }
