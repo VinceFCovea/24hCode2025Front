@@ -1,0 +1,9 @@
+.ressources {
+    display: flex;
+  }
+  
+.ressource {
+    display: flex;
+    margin: 1%;
+    padding: 1%;
+  }

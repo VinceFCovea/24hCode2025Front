@@ -10,10 +10,11 @@ import { EquipeRessource } from './core/model/equipeRessource';
 import { CommonModule } from '@angular/common';
 import { Application, Assets, Sprite } from 'pixi.js';
 import { loadTextures } from 'pixi.js';
+import { VillageoisComponent } from './villageois/villageois.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [CommonModule, VillageoisComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -41,39 +42,7 @@ export class AppComponent implements OnInit {
         reference: 'CHARBON'
       };
 
-      // interval(12700).pipe(
-      //   switchMap(() => this.villageoisService.demanderActionVillageois(NOTRE_ID_EQUIPE, '17e9cdb2-6bb1-484e-ad06-5f49c47e2034', demandeAction))
-      // ).subscribe();
-
-
-
-      (async () =>
-        {
-            const app = new Application();
-
-            await app.init({ background: '#1099bb', resizeTo: window });
-
-            document.body.appendChild(app.canvas);
-
-            const imagePath = 'assets/tiles/lac.png';
-
-            loadTextures.config!.preferWorkers = false;
-
-            const texture = await Assets.load(imagePath);
-
-            const bunny = new Sprite(texture);
-
-            app.stage.addChild(bunny);
-
-            bunny.anchor.set(0.5);
-
-            bunny.x = app.screen.width / 2;
-
-            bunny.y = app.screen.height / 2;
-
-
-        })();
-
+      
 
     }
 

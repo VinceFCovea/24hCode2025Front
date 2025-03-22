@@ -1,29 +1,15 @@
-<p>Coucou</p>
-<p>Notre équipe : {{data}}</p>
+<div class="header"><p>Equipe {{data}}</p></div>
 
-<div>
+<div class="ressources-header">Ressources</div>
 
-  <p>Ressources</p>
-
-  <ul>
-    <li *ngFor="let ressource of ressources">
-      {{ressource.ressource.nom}} : {{ressource.quantite}}
-    </li>
-  </ul>
-
-  <p>Actions à réaliser</p>
-  <form class="form-action">
-    <select>
-      <option value="RECOLTER">Récolter</option>
-      <option value="CONTRUIRE">Construire</option>
-    </select>
-    <select >
-      <option *ngFor="let ressource of ressources" value="{{ressource.ressource.nom}}">{{ressource.ressource.nom}}</option>
-      <option value="BATIMENT">Bâtiment</option>
-    </select>
-    <button type="submit">Lancer l'action</button>
-  </form>
-
-  
+<div class="ressources">
+  <div class="ressource" *ngFor="let ressource of ressources">
+    {{ressource.ressource.nom}} : {{ressource.quantite}}
+  </div>
 </div>
+
+<div class="ressources-header">Villageois</div>
+
+<app-villageois></app-villageois>
+
 
