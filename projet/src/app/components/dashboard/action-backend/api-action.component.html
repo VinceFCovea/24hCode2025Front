@@ -1,0 +1,54 @@
+<!-- api-action.component.html -->
+<div class="container">
+  <h1>Gestion des Villageois</h1>
+
+  <div class="card">
+    <h2>Sélectionner un Villageois</h2>
+    <select [(ngModel)]="selectedVillageoisId">
+      <option *ngFor="let v_id of villageoisIds" [value]="v_id">Villageois {{ v_id }}</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <h2>Déplacer un Villageois</h2>
+    <input type="number" placeholder="Coordonnée X" #moveX>
+    <input type="number" placeholder="Coordonnée Y" #moveY>
+    <button (click)="moveVillageois(Number(moveX.value), Number(moveY.value))">Déplacer</button>
+  </div>
+
+  <div class="card">
+    <h2>Déplacer vers une Ressource</h2>
+    <input type="text" placeholder="Nom de la ressource" #resourceName>
+    <button (click)="moveToResource(resourceName.value)">Déplacer vers Ressource</button>
+  </div>
+
+  <div class="card">
+    <h2>Construire un Bâtiment</h2>
+    <input type="text" placeholder="Type de bâtiment" #buildType>
+    <button (click)="buildConstruction(buildType.value)">Construire</button>
+  </div>
+
+  <div class="card">
+    <h2>Déplacer et Construire</h2>
+    <input type="text" placeholder="Type de bâtiment" #moveBuildType>
+    <input type="number" placeholder="Coordonnée X" #moveBuildX>
+    <input type="number" placeholder="Coordonnée Y" #moveBuildY>
+    <button (click)="moveAndBuild(moveBuildType.value, Number(moveBuildX.value), Number(moveBuildY.value))">Déplacer et Construire</button>
+  </div>
+
+  <div class="card">
+    <h2>Récolter une Ressource</h2>
+    <input type="text" placeholder="Ressource" #recolteResource>
+    <button (click)="recolteaResource(recolteResource.value)">Récolter</button>
+  </div>
+
+  <div class="card">
+    <h2>Mettre en Pause un Villageois</h2>
+    <button (click)="pauseVillageois()">Mettre en Pause</button>
+  </div>
+
+  <div class="card">
+    <h2>Obtenir l'Action en Cours</h2>
+    <button (click)="getCurrentAction()">Voir Action en Cours</button>
+  </div>
+</div>
