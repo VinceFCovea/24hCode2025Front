@@ -6,17 +6,19 @@ import { INTERVALLE_REFRESH, NOTRE_ID_EQUIPE } from '../../../core/constants/cor
 import { CommonModule } from '@angular/common';
 import { ProgressionPipe } from '../../../core/pipes/progression.pipe';
 import { interval } from 'rxjs';
+import {
+  MatProgressBarModule
+} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-batiments',
-  imports: [CommonModule, ProgressionPipe],
+  imports: [CommonModule, ProgressionPipe, MatProgressBarModule],
   templateUrl: './batiments.component.html',
   styleUrl: './batiments.component.css'
 })
 export class BatimentsComponent implements OnInit, OnDestroy {
 
   infoMap?: InfoMap[];
-  batiments : CaseBatiment[] = [];
   monEquipeId = NOTRE_ID_EQUIPE;
   intervalSubscription!: any;
 
@@ -28,6 +30,7 @@ export class BatimentsComponent implements OnInit, OnDestroy {
   }
 
   recupererInfosBatiments() {
+    this.infoMap = [];
     for (let i = 0; i < 33; i++) {
       this.mondeService.recupererInfosMap(0, 32, i, i).subscribe(infosMap => {
         const batiments = infosMap.filter(infoMap =>
