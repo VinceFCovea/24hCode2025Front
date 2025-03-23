@@ -237,10 +237,10 @@ export class MapComponent implements OnInit, OnDestroy {
                               infos += `<p>${ressource.ressource.nom} : ${ressource.quantite}</p>`;
                             }
 
-                            const villageois = this.villageoisEquipePerso.find(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
-                            if (villageois) {
-                              infos += `<p>Villageois : ${villageois.idVillageois}</p>`;
-                            }
+                            const villageoisList = this.villageoisEquipePerso.filter(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
+                            villageoisList.forEach(villageois =>
+                              infos += `<p>Villageois : ${villageois.idVillageois}</p>`
+                            );
 
                             if (equipeProprietaire) {
                               infos += `<p>Equipe propriétaire : ${equipeProprietaire.nom}</p>`;
