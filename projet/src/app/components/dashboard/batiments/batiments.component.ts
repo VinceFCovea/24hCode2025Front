@@ -15,8 +15,8 @@ import { log } from 'console';
 })
 export class BatimentsComponent {
 
-  infoMap?: InfoMap[];
-  batiments : CaseBatiment[] = [];
+  infoMap : InfoMap[] = [];
+  batiment?: string;
   monEquipeId = NOTRE_ID_EQUIPE;
 
   constructor(private mondeService: MondeService) {}
@@ -28,7 +28,11 @@ export class BatimentsComponent {
             infoMap.batiment_construit && infoMap.batiment_construit.proprietaire.idEquipe === this.monEquipeId
           );
           this.infoMap = this.infoMap ? [...this.infoMap, ...batiments] : batiments;
+          this.infoMap.map(map => {
+            this.batiment = map.batiment_construit?.detailBatiment.description;
+          })
         });
+        
       }
 
   }
