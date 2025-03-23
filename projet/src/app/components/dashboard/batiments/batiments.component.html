@@ -1,8 +1,9 @@
-<div class="batiments">
-    <div class="card" *ngFor="let caseMap of infoMap">
+<div class="batiments" *ngIf="infoMap && infoMap.length >0">
+    <div class="card"  *ngFor="let caseMap of infoMap">
       <h3>{{ caseMap.batiment_construit?.detailBatiment?.type }}</h3>
       <p>Position: ({{ caseMap.coord_x }}, {{ caseMap.coord_y }})</p>
       <p>Progression: {{caseMap | progression}}%</p>
+      {{ getFormattedCout(caseMap.batiment_construit?.detailBatiment?.coutParTour) }}
       <mat-progress-bar mode="determinate" [value]="caseMap | progression"></mat-progress-bar>
     </div>
   </div>

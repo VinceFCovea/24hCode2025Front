@@ -33,8 +33,25 @@ export class BatimentsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+      for (let i = 0; i < 33; i++) {
+        this.mondeService.recupererInfosMap(0, 32, i, i).subscribe(infosMap => {
+          const batiments = infosMap.filter(infoMap =>
+            infoMap.batiment_construit && infoMap.batiment_construit.proprietaire.idEquipe === this.monEquipeId
+          );
+          this.infoMap = this.infoMap ? [...this.infoMap, ...batiments] : batiments;
+          console.log(this.infoMap);
+          
+        });
+        
+      }
+    
+
       this.recupererInfosBatiments();
       this.lancerIntervalleRefresh();
+  }
+
+  getFormattedCout(coutParTour: { ressource: string; quantite: number }[] | undefined): string {
+    return coutParTour ? coutParTour.map(c => `${c.ressource}: ${c.quantite}`).join(', ') : '';
   }
 
   recupererInfosBatiments() {
@@ -57,6 +74,7 @@ export class BatimentsComponent implements OnInit, OnDestroy {
       this.recupererInfosBatiments();
     });
   }
+
 
   ngOnDestroy(): void {
     this.intervalSubscription?.unsubscribe();

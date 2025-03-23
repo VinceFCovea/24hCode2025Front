@@ -14,5 +14,6 @@ export const routes: Routes = [
   { path: 'batiments', component: BatimentsComponent},
   { path: 'ressources', component: RessourcesComponent},
   { path: 'equipes', component: EquipesComponent},
+
   { path: 'api-action', component: ApiActionComponent},
 ];
