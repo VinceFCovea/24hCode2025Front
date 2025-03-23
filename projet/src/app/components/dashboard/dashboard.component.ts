@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   data!: string;
   ressources!: Array<EquipeRessource>;
+  precentesRessources!: Array<EquipeRessource>;
   intervalSubscription!: any;
 
   constructor(
@@ -32,42 +33,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.recupererInfosResources();
 
       this.lancerIntervalleRefresh();
-
-      // interval(1000).pipe(
-      //   tap(_ => {
-      //     console.log('plop');
-      //     this.recupererInfosResources();
-      //   })
-      // ).subscribe();
-
-      // interval(1000).pipe(
-      //   tap(() => {
-      //     console.log('plop');
-      //   })).subscribe();
-
-      // interval(1000).pipe(
-      //   switchMap(_ => {
-      //     return this.recupererInfosResources()
-      //   })
-      // ).subscribe();
-
-      // interval(this.INTERVALLE_REFRESH).pipe(
-      //   tap(i => console.log(i))).subscribe();
-
-      // interval(this.INTERVALLE_REFRESH).pipe(
-      //   tap(i => console.log(i)),
-      //   switchMap(_ => {
-      //     return this.recupererInfosResources();
-      //   }),
-      //   switchMap(_ => {
-      //     return this.recupererInfosEquipes();
-      //   })
-      // ).subscribe();
-
-      // setInterval(_ => {
-      //   this.recupererInfosResources().subscribe();
-      //   this.recupererInfosEquipes().subscribe();
-      // }, this.INTERVALLE_REFRESH);
 
       const demandeAction: DemandeAction = {
         action: NomAction.RECOLTER,
@@ -87,6 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         tap(
         (equipe) => {
           this.data = equipe.nom;
+          this.precentesRessources = this.ressources;
           this.ressources = equipe.ressources!;
           this.ressources.sort((a, b) => {
             if (a.ressource.nom < b.ressource.nom) {
@@ -103,5 +69,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.intervalSubscription?.unsubscribe();
     }
 
+
+    calculerDelta(nomRessource: string, nouvelleQuantite: number) {
+      if (this.precentesRessources) {
+        const ancienneQuantite = this.precentesRessources.find(res => res.ressource.nom === nomRessource)!.quantite;
+        return nouvelleQuantite - ancienneQuantite;
+      } else {
+        return 0;
+      }
+    }
 
 }
