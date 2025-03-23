@@ -30,6 +30,13 @@ export class VillageoisComponent implements OnInit, OnDestroy {
     this.villageoisService.recupererListeVillageoisEquipe(NOTRE_ID_EQUIPE).subscribe({
       next: (data) => {
         this.listeVillageois = data.map((villageois) => villageois);
+        this.listeVillageois.sort((a, b) => {
+          if (a.idVillageois < b.idVillageois) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des villageois:', err);

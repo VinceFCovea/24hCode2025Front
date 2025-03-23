@@ -83,6 +83,9 @@ export class BatimentsComponent implements OnInit, OnDestroy {
           infoMap.batiment_construit && infoMap.batiment_construit.proprietaire.idEquipe === this.monEquipeId
         );
         this.infoMap = this.infoMap ? [...this.infoMap, ...batiments] : batiments;
+        this.infoMap.sort((a, b) => {
+          return (a.coord_x - b.coord_x) + (a.coord_y - b.coord_y);
+        });
       });
     }
   }

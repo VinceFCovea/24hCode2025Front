@@ -15,11 +15,13 @@ import {
   MatDialog
 } from '@angular/material/dialog';
 import { ModalComponent } from './modal/modal.component';
+import { ProgressionPipe } from '../../core/pipes/progression.pipe';
 
 
 @Component({
   selector: 'app-map',
   imports: [CommonModule],
+  providers: [ProgressionPipe],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
@@ -85,7 +87,8 @@ export class MapComponent implements OnInit, OnDestroy {
         private readonly equipeService: EquipesService,
         private readonly villageoisService: VillageoisService,
         private readonly mondeService: MondeService,
-        private readonly tileService: TileService
+        private readonly tileService: TileService,
+        private readonly progressionPipe: ProgressionPipe
       ) {}
 
 
@@ -247,7 +250,7 @@ export class MapComponent implements OnInit, OnDestroy {
                             }
 
                             if (infoMap.batiment_construit) {
-                              infos += `<p>Bâtiment : ${infoMap.batiment_construit.detailBatiment.type}</p>`;
+                              infos += `<p>Bâtiment : ${infoMap.batiment_construit.detailBatiment.type}. Progression : ${this.progressionPipe.transform(infoMap)} %</p>`;
                             }
 
                             this.openDialog(infos);
