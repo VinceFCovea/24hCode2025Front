@@ -3,9 +3,10 @@
 }
 
 .equipes {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 20px;
+    max-width: 250px;
     margin-bottom: 2%;
   }
 

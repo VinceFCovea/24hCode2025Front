@@ -186,12 +186,6 @@ export class MapComponent implements OnInit, OnDestroy {
                 this.mondeService.recupererInfosMap(0, 32, i, i).subscribe(infosMap => {
                   infosMap.forEach(infoMap => {
                     this.afficherInfoMap(infoMap);
-
-                    // const text = new Text({
-                    //   text: `${infoMap.coord_x},${infoMap.coord_y}`,});
-                    // text.x = infoMap.coord_x * this.TAILLE_TILE;
-                    // text.y = 64;
-                    // this.app.stage.addChild(text);
                   })
                   });
               }
@@ -244,6 +238,15 @@ export class MapComponent implements OnInit, OnDestroy {
                         this.texturesChargees.push({nomImage: imagePath, texture});
                       }
                       const sprite = new Sprite({texture, interactive: true});
+                      const taillePolice = 14;
+                      const text = new Text({
+                        text: `${infoMap.coord_x},${infoMap.coord_y}`,
+                        style: {
+                          fontSize: `${taillePolice}px`,
+                          fontWeight: 'bold',
+                          fill: 'red'
+                        }
+                      });
                       if (sprite) {
                         if (true) { // outlineNecessaire
                           const equipeProprietaire = this.equipes.find(equipe => equipe.id === infoMap.batiment_construit?.proprietaire?.idEquipe);
@@ -282,16 +285,25 @@ export class MapComponent implements OnInit, OnDestroy {
 
                           sprite.on('mouseover', () => {
                             sprite.filters = [new OutlineFilter({thickness: 2, color: 0xffffff})];
+                            this.app.stage.addChild(text);
                           });
 
                           sprite.on('mouseout', () => {
                             sprite.filters = [new OutlineFilter({thickness: 1, color: colorHex})];
+                            this.app.stage.removeChild(text);
                           });
+
+
+
+
+
                         }
                         sprite.height = this.TAILLE_TILE;
                         sprite.width = this.TAILLE_TILE;
                         sprite.x = infoMap.coord_x * this.TAILLE_TILE;
                         sprite.y = 32 * this.TAILLE_TILE - infoMap.coord_y * this.TAILLE_TILE;
+                        text.x = sprite.x + (this.TAILLE_TILE / 2) - taillePolice;
+                        text.y = sprite.y + (this.TAILLE_TILE / 2) - (taillePolice / 2);
                         this.app.stage.addChild(sprite);
                       }
                     })
