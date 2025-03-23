@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { InfoMap } from '../../core/model/infoMap';
 import { MondeService } from '../../shared/services/monde.service';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,10 @@ import { EquipesService } from '../../shared/services/equipes.service';
 import { VillageoisService } from '../../shared/services/villageois.service';
 import { TileService } from '../../shared/services/tile.service';
 import { OutlineFilter } from 'pixi-filters';
+import {
+  MatDialog
+} from '@angular/material/dialog';
+import { ModalComponent } from './modal/modal.component';
 
 
 @Component({
@@ -23,6 +27,8 @@ export class MapComponent implements OnInit {
 
   app: any;
   readonly TAILLE_TILE = 64;
+
+  dialog = inject(MatDialog);
 
   texturesChargees: TextureChargee[] = [];
     villageoisEquipePerso: Villageois[] = [];
@@ -66,6 +72,14 @@ export class MapComponent implements OnInit {
       0x204509
     ];
 
+    viewportTransform = {
+      x: 0,
+      y: 0,
+      scale: 1
+    }
+    previousX = 0;
+    previousY = 0;
+
     constructor(
         private readonly equipeService: EquipesService,
         private readonly villageoisService: VillageoisService,
@@ -81,6 +95,29 @@ export class MapComponent implements OnInit {
       });
 
     }
+
+    @HostListener('window:wheel', ['$event'])
+    zoom(event: any) {
+      const localX = event.clientX;
+      const localY = event.clientY;
+
+      this.viewportTransform.x += localX - this.previousX;
+      this.viewportTransform.y += localY - this.previousY;
+
+      this.previousX = localX;
+      this.previousY = localY;
+
+      if (event.deltaY < 0) {
+        this.viewportTransform.scale *= 1.5;
+      } else if (event.deltaY > 0) {
+        this.viewportTransform.scale /= 1.5;
+      }
+
+      this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
+      // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
+    }
+
+
 
     recupererInfosEquipes() {
       return this.equipeService.recupererEquipes().pipe(
@@ -183,18 +220,33 @@ export class MapComponent implements OnInit {
                       const sprite = new Sprite({texture, interactive: true});
                       if (sprite) {
                         if (true) { // outlineNecessaire
-                          const colorHex = this.equipes.find(equipe => equipe.id === infoMap.batiment_construit?.proprietaire?.idEquipe)?.colorHex || 0x000000;
+                          const equipeProprietaire = this.equipes.find(equipe => equipe.id === infoMap.batiment_construit?.proprietaire?.idEquipe);
+                          const colorHex = equipeProprietaire?.colorHex || 0x000000;
 
                           sprite.filters = [new OutlineFilter({thickness: colorHex === 0x000000 ? 1 : 2, color: colorHex})];
 
                           sprite.on('click', () => {
-                            let infos = `Coordonnées : ${infoMap.coord_x},${infoMap.coord_y}`;
+                            let infos = `<p>Coordonnées : ${infoMap.coord_x},${infoMap.coord_y}<p>`;
 
                             for (const ressource of infoMap.ressources) {
-                              infos += `\n${ressource.ressource.nom} : ${ressource.quantite}`;
+                              infos += `<p>${ressource.ressource.nom} : ${ressource.quantite}</p>`;
                             }
 
-                            alert(infos);
+                            const villageois = this.villageoisEquipePerso.find(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
+                            if (villageois) {
+                              infos += `<p>Villageois : ${villageois.idVillageois}</p>`;
+                            }
+
+                            if (equipeProprietaire) {
+                              infos += `<p>Equipe propriétaire : ${equipeProprietaire.nom}</p>`;
+                            }
+
+                            if (infoMap.batiment_construit) {
+                              infos += `<p>Bâtiment : ${infoMap.batiment_construit.detailBatiment.type}</p>`;
+                            }
+
+                            this.openDialog(infos);
+                            // alert(infos);
                           });
 
                           sprite.on('mouseover', () => {
@@ -216,6 +268,14 @@ export class MapComponent implements OnInit {
               } else {
                 return of(null);
               }
+            }
+
+            openDialog(infos: string) {
+              this.dialog.open(ModalComponent, {
+                data: {
+                  infos
+                },
+              });
             }
 
 }

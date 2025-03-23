@@ -6,10 +6,11 @@ import { InfoMap } from '../../../core/model/infoMap';
 import { NOTRE_ID_EQUIPE } from '../../../core/constants/core.constants';
 import { CommonModule } from '@angular/common';
 import { log } from 'console';
+import { ProgressionPipe } from '../../../core/pipes/progression.pipe';
 
 @Component({
   selector: 'app-batiments',
-  imports: [CommonModule],
+  imports: [CommonModule, ProgressionPipe],
   templateUrl: './batiments.component.html',
   styleUrl: './batiments.component.css'
 })
@@ -36,6 +37,5 @@ export class BatimentsComponent {
       }
 
   }
-
 
 }
