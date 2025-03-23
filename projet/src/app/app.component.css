@@ -5,6 +5,10 @@
     align-items: stretch;
   }
 
+  .container a:hover {
+    font-weight: bolder;
+  }
+
   .sidebar {
     width: 20%;
     min-width: 20%;
