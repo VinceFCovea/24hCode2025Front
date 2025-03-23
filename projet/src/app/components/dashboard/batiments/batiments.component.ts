@@ -34,7 +34,7 @@ export class BatimentsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
       this.recupererInfosBatiments();
-      // this.lancerIntervalleRefresh();
+      this.lancerIntervalleRefresh();
   }
 
   recupererInfosBatiments() {
