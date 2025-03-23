@@ -6,7 +6,7 @@ import { TextureChargee } from '../../core/model/texture-chargee';
 import { Villageois } from '../../core/model/villageois';
 import { from, interval, Observable, of, switchMap, tap } from 'rxjs';
 import { Application, Assets, BlurFilter, Filter, Sprite, Text, Texture } from 'pixi.js';
-import { INTERVALLE_REFRESH, NOTRE_ID_EQUIPE } from '../../core/constants/core.constants';
+import { INTERVALLE_REFRESH, NOTRE_ID_EQUIPE, TAILLE_COTE_MAP } from '../../core/constants/core.constants';
 import { EquipesService } from '../../shared/services/equipes.service';
 import { VillageoisService } from '../../shared/services/villageois.service';
 import { TileService } from '../../shared/services/tile.service';
@@ -28,8 +28,11 @@ import { ProgressionPipe } from '../../core/pipes/progression.pipe';
 export class MapComponent implements OnInit, OnDestroy {
 
   app: any;
-  readonly TAILLE_TILE = 64;
+  readonly TAILLE_TILE = 48;
   intervalSubscription!: any;
+  zoomLevel = 1;
+  minZoom = 1;
+  maxZoom = 3;
 
   dialog = inject(MatDialog);
 
@@ -105,25 +108,37 @@ export class MapComponent implements OnInit, OnDestroy {
 
 
     // @HostListener('window:wheel', ['$event'])
-    // zoom(event: any) {
-    //   const localX = event.clientX;
-    //   const localY = event.clientY;
+    zoom(event: any) {
+      const localX = event.clientX;
+      const localY = event.clientY;
 
-    //   this.viewportTransform.x += localX - this.previousX;
-    //   this.viewportTransform.y += localY - this.previousY;
+      // this.viewportTransform.x += localX - this.previousX;
+      // this.viewportTransform.y += localY - this.previousY;
 
-    //   this.previousX = localX;
-    //   this.previousY = localY;
+      this.previousX = localX;
+      this.previousY = localY;
 
-    //   if (event.deltaY < 0) {
-    //     this.viewportTransform.scale *= 1.5;
-    //   } else if (event.deltaY > 0) {
-    //     this.viewportTransform.scale /= 1.5;
-    //   }
+      if (event.deltaY < 0) {
+        this.zoomLevel++;
+        if (this.zoomLevel <= this.maxZoom) {
+          this.viewportTransform.scale *= 1.5;
+        } else {
+          this.zoomLevel = this.maxZoom;
+        }
+      } else if (event.deltaY > 0) {
+        this.zoomLevel--;
+        if (this.zoomLevel >= this.minZoom) {
+          this.viewportTransform.scale /= 1.5;
+        } else {
+          this.zoomLevel = this.minZoom;
+        }
+      }
 
-    //   this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
-    //   // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
-    // }
+
+
+      this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
+      // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
+    }
 
 
 
@@ -140,9 +155,12 @@ export class MapComponent implements OnInit, OnDestroy {
     initContext() {
           this.app = new Application();
 
-          from(this.app.init({width: 2112, height: 2112})).pipe( // 33 * 64 (taille d'une tile) = 2112
+          from(this.app.init({width: TAILLE_COTE_MAP * this.TAILLE_TILE, height: TAILLE_COTE_MAP * this.TAILLE_TILE})).pipe(
             tap(_ => {
               document.getElementById('map')!.appendChild(this.app.canvas);
+              this.app.canvas.addEventListener('wheel', ($event: any) => {
+                this.zoom($event);
+              });
             }),
             switchMap(_ => {
               return of(this.afficherMap());
@@ -234,7 +252,8 @@ export class MapComponent implements OnInit, OnDestroy {
                           sprite.filters = [new OutlineFilter({thickness: colorHex === 0x000000 ? 1 : 2, color: colorHex})];
 
                           sprite.on('click', () => {
-                            let infos = `<p>Coordonnées : ${infoMap.coord_x},${infoMap.coord_y}<p>`;
+                            const title = `(${infoMap.coord_x},${infoMap.coord_y})`;
+                            let infos = `<p>=== Ressources ===</p>`;
 
                             for (const ressource of infoMap.ressources) {
                               infos += `<p>${ressource.ressource.nom} : ${ressource.quantite}</p>`;
@@ -242,7 +261,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
                             const villageoisList = this.villageoisEquipePerso.filter(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
                             villageoisList.forEach(villageois =>
-                              infos += `<p>Villageois : ${villageois.idVillageois}</p>`
+                              infos += `<p>$Villageois : {villageois.idVillageois}</p>`
                             );
 
                             if (equipeProprietaire) {
@@ -257,7 +276,7 @@ export class MapComponent implements OnInit, OnDestroy {
                               // }
                             }
 
-                            this.openDialog(infos);
+                            this.openDialog(title, infos);
                             // alert(infos);
                           });
 
@@ -282,9 +301,10 @@ export class MapComponent implements OnInit, OnDestroy {
               }
             }
 
-            openDialog(infos: string) {
+            openDialog(title: string, infos: string) {
               this.dialog.open(ModalComponent, {
                 data: {
+                  title,
                   infos
                 },
               });
