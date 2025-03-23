@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TextureChargee } from '../../core/model/texture-chargee';
 import { Villageois } from '../../core/model/villageois';
 import { from, interval, Observable, of, switchMap, tap } from 'rxjs';
-import { Application, Assets, Sprite, Text, Texture } from 'pixi.js';
+import { Application, Assets, BlurFilter, Filter, Sprite, Text, Texture } from 'pixi.js';
 import { INTERVALLE_REFRESH, NOTRE_ID_EQUIPE } from '../../core/constants/core.constants';
 import { EquipesService } from '../../shared/services/equipes.service';
 import { VillageoisService } from '../../shared/services/villageois.service';
@@ -250,7 +250,11 @@ export class MapComponent implements OnInit, OnDestroy {
                             }
 
                             if (infoMap.batiment_construit) {
-                              infos += `<p>Bâtiment : ${infoMap.batiment_construit.detailBatiment.type}. Progression : ${this.progressionPipe.transform(infoMap)} %</p>`;
+                              const progression = this.progressionPipe.transform(infoMap);
+                              infos += `<p>Bâtiment : ${infoMap.batiment_construit.detailBatiment.type}. Progression : ${progression} %</p>`;
+                              // if (progression === 100) {
+                              //   sprite.filters = [new BlurFilter({ strength: 16 })];
+                              // }
                             }
 
                             this.openDialog(infos);
