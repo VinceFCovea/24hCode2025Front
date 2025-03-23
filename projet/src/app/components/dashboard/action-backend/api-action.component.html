@@ -1,4 +1,3 @@
-<!-- api-action.component.html -->
 <div class="container">
   <h1>Gestion des Villageois</h1>
 
@@ -24,16 +23,22 @@
 
   <div class="card">
     <h2>Construire un Bâtiment</h2>
-    <input type="text" placeholder="Type de bâtiment" #buildType>
-    <button (click)="buildConstruction(buildType.value)">Construire</button>
+    <input type="text" placeholder="Type de bâtiment" [(ngModel)]="selectedBuilding" (input)="filterBuildings()">
+    <select size="5">
+      <option *ngFor="let building of filteredBuildings" (click)="selectBuilding(building)">{{ building }}</option>
+    </select>
+    <button (click)="buildConstruction(selectedBuilding)">Construire</button>
   </div>
 
   <div class="card">
     <h2>Déplacer et Construire</h2>
-    <input type="text" placeholder="Type de bâtiment" #moveBuildType>
+    <input type="text" placeholder="Type de bâtiment" [(ngModel)]="selectedMoveBuilding" (input)="filterMoveBuildings()">
+    <select size="5">
+      <option *ngFor="let building of filteredMoveBuildings" (click)="selectMoveBuilding(building)">{{ building }}</option>
+    </select>
     <input type="number" placeholder="Coordonnée X" #moveBuildX>
     <input type="number" placeholder="Coordonnée Y" #moveBuildY>
-    <button (click)="moveAndBuild(moveBuildType.value, Number(moveBuildX.value), Number(moveBuildY.value))">Déplacer et Construire</button>
+    <button (click)="moveAndBuild(selectedMoveBuilding, Number(moveBuildX.value), Number(moveBuildY.value))">Déplacer et Construire</button>
   </div>
 
   <div class="card">
@@ -47,8 +52,4 @@
     <button (click)="pauseVillageois()">Mettre en Pause</button>
   </div>
 
-  <div class="card">
-    <h2>Obtenir l'Action en Cours</h2>
-    <button (click)="getCurrentAction()">Voir Action en Cours</button>
-  </div>
 </div>
