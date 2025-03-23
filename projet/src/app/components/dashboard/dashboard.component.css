@@ -6,6 +6,13 @@
   justify-content: center;
 }
 
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .header {
   display: flex;
   font-size: 3rem;
