@@ -264,7 +264,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
                             const villageoisList = this.villageoisEquipePerso.filter(villageois => villageois.positionX === infoMap.coord_x && villageois.positionY === infoMap.coord_y);
                             villageoisList.forEach(villageois =>
-                              infos += `<p>$Villageois : {villageois.idVillageois}</p>`
+                              infos += `<p>Villageois : ${villageois.idVillageois}</p>`
                             );
 
                             if (equipeProprietaire) {
