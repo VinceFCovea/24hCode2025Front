@@ -1,15 +1,22 @@
 <div class="ressources">
   <div class="card" *ngFor="let v of listeVillageois">
-      <div class="title">{{ v.nom }}</div>
-      <div class="id">{{ v.idVillageois }}</div>
-      <div class="position">
-        Position X = {{ v.positionX }}<br/>Position Y = {{ v.positionY }}
-      </div>
-      <div class="status">
-        Disponible : <span [ngClass]="v.disponible ? 'yes' : 'no'">
+    <div class="title">{{ v.idVillageois.slice(0, 2) }}</div>
+    <div class="id">{{ v.idVillageois }}</div>
+    <div class="position">
+      Position X = {{ v.positionX }}<br/>Position Y = {{ v.positionY }}
+    </div>
+    <div class="status">
+      Disponible : <span [ngClass]="v.disponible ? 'yes' : 'no'">
           {{ v.disponible ? 'Oui' : 'Non' }}
         </span>
-      </div>
+    </div>
+    <div class="action">
+      <div>Action actuelle : {{ v.currentAction?.action }}</div>
+      <div>Bâtiment : {{ v.currentAction?.batiment }}</div>
+      <div>Ressource : {{ v.currentAction?.ressource }}</div>
+      <div>Destination X : {{ v.currentAction?.dest_x }}</div>
+      <div>Destination Y : {{ v.currentAction?.dest_y }}</div>
+      <div>Prochaine action : {{ v.currentAction?.next_action }}</div>
+    </div>
   </div>
 </div>
-

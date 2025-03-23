@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface ActionResponse {
+  action: string;
+  batiment: string;
+  ressource: string;
+  dest_x: number;
+  dest_y: number;
+  next_action: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
