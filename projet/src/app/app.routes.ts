@@ -5,6 +5,7 @@ import { VillageoisComponent } from './components/dashboard/villageois/villageoi
 import { BatimentsComponent } from './components/dashboard/batiments/batiments.component';
 import { RessourcesComponent } from './components/dashboard/ressources/ressources.component';
 import { EquipesComponent } from './components/dashboard/equipes/equipes.component';
+import {ApiActionComponent} from './components/dashboard/action-backend/api-action.component';
 
 export const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -14,4 +15,5 @@ export const routes: Routes = [
   { path: 'ressources', component: RessourcesComponent},
   { path: 'equipes', component: EquipesComponent},
 
+  { path: 'api-action', component: ApiActionComponent},
 ];

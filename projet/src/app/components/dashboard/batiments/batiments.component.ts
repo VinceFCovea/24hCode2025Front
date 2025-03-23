@@ -8,18 +8,20 @@ import { ProgressionPipe } from '../../../core/pipes/progression.pipe';
 import { Batiment } from '../../../core/model/batiment';
 import { BatimentRessource } from '../../../core/model/batimentRessource';
 import { interval } from 'rxjs';
+import {
+  MatProgressBarModule
+} from '@angular/material/progress-bar';
 import { BatimentsService } from '../../../shared/services/batiments.service';
 
 @Component({
   selector: 'app-batiments',
-  imports: [CommonModule, ProgressionPipe],
+  imports: [CommonModule, ProgressionPipe, MatProgressBarModule],
   templateUrl: './batiments.component.html',
   styleUrl: './batiments.component.css'
 })
 export class BatimentsComponent implements OnInit, OnDestroy {
 
   infoMap : InfoMap[] = [];
-  batiments : string[] = [];
   listeBatiments?: Batiment[] = [];
   monEquipeId = NOTRE_ID_EQUIPE;
   couts?:BatimentRessource[]
@@ -53,6 +55,7 @@ export class BatimentsComponent implements OnInit, OnDestroy {
   }
 
   recupererInfosBatiments() {
+    this.infoMap = [];
     for (let i = 0; i < 33; i++) {
       this.mondeService.recupererInfosMap(0, 32, i, i).subscribe(infosMap => {
         const batiments = infosMap.filter(infoMap =>

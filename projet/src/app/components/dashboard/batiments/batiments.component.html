@@ -4,5 +4,6 @@
       <p>Position: ({{ caseMap.coord_x }}, {{ caseMap.coord_y }})</p>
       <p>Progression: {{caseMap | progression}}%</p>
       {{ getFormattedCout(caseMap.batiment_construit?.detailBatiment?.coutParTour) }}
+      <mat-progress-bar mode="determinate" [value]="caseMap | progression"></mat-progress-bar>
     </div>
   </div>

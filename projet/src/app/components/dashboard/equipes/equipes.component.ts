@@ -55,7 +55,7 @@ export class EquipesComponent implements OnInit, OnDestroy {
             this.equipes = equipes.map((equipe, index) => {return {id: equipe.idEquipe, nom: `${equipe.nom} [${equipe.type}]`, score: equipe?.ressources?.find(res => res.ressource.nom === 'POINT')?.quantite}});
             this.equipes.sort((a, b) => b.score - a.score);
           })
-        );
+        ).subscribe();
   }
 
   ngOnDestroy(): void {
