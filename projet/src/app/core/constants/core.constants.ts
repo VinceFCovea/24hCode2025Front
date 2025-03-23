@@ -10,3 +10,4 @@ export const NOTRE_ID_EQUIPE = 'c1b647f1-1748-492a-b5a9-2a9af9b5e5ed';
 export const REQUEST_HEADERS = new HttpHeaders().set('Authorization', `Bearer ${TOKEN_API}`);
 
 export const INTERVALLE_REFRESH = 12500;
+export const TAILLE_COTE_MAP = 33;
