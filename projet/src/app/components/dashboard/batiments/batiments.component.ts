@@ -37,43 +37,19 @@ export class BatimentsComponent implements OnInit, OnDestroy {
             infoMap.batiment_construit && infoMap.batiment_construit.proprietaire.idEquipe === this.monEquipeId
           );
           this.infoMap = this.infoMap ? [...this.infoMap, ...batiments] : batiments;
-          /*this.infoMap.map(map => {
-            this.listeBatiments = map.batiment_construit?.detailBatiment;
-            console.log(this.listeBatiments);
-          })*/
-        });
-      }
-
-      /*this.batimentService.recupererBatiments().subscribe((batiment) => {
-        this.listeBatiments = batiment.map(bat => bat);
-        this.couts = this.listeBatiments
-        .map(bat => bat.coutParTour)
-        .flat();
-        this.couts.flatMap((cout) => {
+          console.log(this.infoMap);
           
-        })
-        console.log(this.couts);
-      })*/
+        });
+        
+      }
+    
 
-       /* this.batimentService.recupererBatiments().subscribe((batiment) => {
-          this.listeBatiments = batiment.map(bat => bat);
-          this.couts = this.listeBatiments
-          .map(bat => bat.coutParTour)  
-          .flat();  
-        
-          this.listeBatiments.forEach(bat => {
-            console.log(`Couts pour le bâtiment ${bat.description}:`);
-            bat.coutParTour.forEach(cout => {
-              console.log(`- Ressource: ${cout.ressource}, Quantité: ${cout.quantite}`);
-            });
-          });
-        
-          console.log(this.couts);  
-        });*/
-      
-      
       this.recupererInfosBatiments();
       this.lancerIntervalleRefresh();
+  }
+
+  getFormattedCout(coutParTour: { ressource: string; quantite: number }[] | undefined): string {
+    return coutParTour ? coutParTour.map(c => `${c.ressource}: ${c.quantite}`).join(', ') : '';
   }
 
   recupererInfosBatiments() {
@@ -95,6 +71,7 @@ export class BatimentsComponent implements OnInit, OnDestroy {
       this.recupererInfosBatiments();
     });
   }
+
 
   ngOnDestroy(): void {
     this.intervalSubscription?.unsubscribe();
