@@ -12,7 +12,7 @@ import { EquipesComponent } from "./equipes/equipes.component";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, VillageoisComponent, BatimentsComponent, EquipesComponent],
+  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   standalone: true

@@ -35,8 +35,35 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  .form-action {
+  .container {
     display: flex;
+    height: 100%;
+  }
+  
+  .sidebar {
+    width: 20%;
+    background-color: #1e2e45;
+    color: white;
+    padding: 20px;
+    height: 100%;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 10px 0;
+  }
+  
+  .sidebar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .content {    
+    width: 80%;
   }
 
   .header {
@@ -58,7 +85,6 @@
   .ressources {
     display: flex;
     margin-bottom: 2%;
-
   }
 
   .ressources-header{

@@ -14,17 +14,10 @@
     margin-bottom: 2%;
 }
 
-.ressources {
-  display: flex;
-  margin-bottom: 2%;
-
-}
-
 .ressources-header{
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1%;
   font-size: 1.125rem;
   font-weight: 500;
   margin-top: 1%;
@@ -32,8 +25,11 @@
 
 .ressources {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .card {
@@ -66,4 +62,9 @@
 .negative {
   color: red;
   font-weight: bold;
+}
+
+.logo {
+  display: flex;
+  justify-self: center;
 }

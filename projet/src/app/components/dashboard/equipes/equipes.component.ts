@@ -43,10 +43,10 @@ export class EquipesComponent implements OnInit {
   recupererInfosEquipes() {
         return this.equipeService.recupererEquipes().pipe(
           tap(equipes => {
-            this.equipes = equipes.map((equipe, index) => {return {id: equipe.idEquipe, nom: `${equipe.nom} [${equipe.type}]`, color: this.couleurs[index], score: equipe?.ressources?.find(res => res.ressource.nom === 'POINT')?.quantite}});
+            this.equipes = equipes.map((equipe, index) => {return {id: equipe.idEquipe, nom: `${equipe.nom} [${equipe.type}]`, score: equipe?.ressources?.find(res => res.ressource.nom === 'POINT')?.quantite}});
             this.equipes.sort((a, b) => b.score - a.score);
           })
         );
-      }
+  }
 
 }

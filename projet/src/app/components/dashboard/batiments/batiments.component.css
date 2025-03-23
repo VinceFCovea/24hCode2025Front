@@ -1,8 +1,11 @@
 .batiments {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
     margin-bottom: 2%;
+    position: absolute;
+    top:0;
+    left: 0;
   }
   
   .card {
