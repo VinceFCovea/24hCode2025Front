@@ -142,7 +142,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
           from(this.app.init({width: 2112, height: 2112})).pipe( // 33 * 64 (taille d'une tile) = 2112
             tap(_ => {
-              document.body.appendChild(this.app.canvas);
+              document.getElementById('map')!.appendChild(this.app.canvas);
             }),
             switchMap(_ => {
               return of(this.afficherMap());

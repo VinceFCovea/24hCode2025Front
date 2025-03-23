@@ -5,10 +5,13 @@ import { InfoMap } from '../../../core/model/infoMap';
 import { INTERVALLE_REFRESH, NOTRE_ID_EQUIPE } from '../../../core/constants/core.constants';
 import { CommonModule } from '@angular/common';
 import { ProgressionPipe } from '../../../core/pipes/progression.pipe';
+import { Batiment } from '../../../core/model/batiment';
+import { BatimentRessource } from '../../../core/model/batimentRessource';
 import { interval } from 'rxjs';
 import {
   MatProgressBarModule
 } from '@angular/material/progress-bar';
+import { BatimentsService } from '../../../shared/services/batiments.service';
 
 @Component({
   selector: 'app-batiments',
@@ -18,11 +21,16 @@ import {
 })
 export class BatimentsComponent implements OnInit, OnDestroy {
 
-  infoMap?: InfoMap[];
+  infoMap : InfoMap[] = [];
+  listeBatiments?: Batiment[] = [];
   monEquipeId = NOTRE_ID_EQUIPE;
+  couts?:BatimentRessource[]
   intervalSubscription!: any;
 
-  constructor(private mondeService: MondeService) {}
+  constructor(
+    private mondeService: MondeService,
+    private batimentService : BatimentsService,
+  ) {}
 
   ngOnInit() {
       this.recupererInfosBatiments();
