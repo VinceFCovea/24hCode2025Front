@@ -1,6 +1,3 @@
-<img src="./assets/Logo_MMA.jpg" width="280" height="90" class="logo"/>
-<div class="header"><p>Equipe {{data}}</p></div>
-
 <div class="ressources">
   <div class="card" *ngFor="let ressource of ressources">
     <div class="title">{{ ressource.ressource.nom }}</div>
@@ -15,6 +12,6 @@
     >
       {{ ressource.quantite }}
     </p>
+    <p>Delta : {{calculerDelta(ressource.ressource.nom, ressource.quantite)}}</p>
   </div>
 </div>
-

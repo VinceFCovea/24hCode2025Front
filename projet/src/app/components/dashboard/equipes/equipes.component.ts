@@ -1,7 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { EquipesService } from "../../../shared/services/equipes.service";
-import { tap } from "rxjs";
+import { interval, tap } from "rxjs";
+import { INTERVALLE_REFRESH } from "../../../core/constants/core.constants";
 
 @Component({
   selector: 'app-equipes',
@@ -10,9 +11,10 @@ import { tap } from "rxjs";
   styleUrl: './equipes.component.css',
   standalone: true
 })
-export class EquipesComponent implements OnInit {
+export class EquipesComponent implements OnInit, OnDestroy {
 
   equipes: any[] = [];
+  intervalSubscription!: any;
 
   couleurs = [
     '#561ED3',
@@ -36,8 +38,15 @@ export class EquipesComponent implements OnInit {
   constructor(private readonly equipeService: EquipesService) {}
 
   ngOnInit(): void {
-    this.recupererInfosEquipes().subscribe();
+    this.recupererInfosEquipes();
+    this.lancerIntervalleRefresh();
   }
+
+  lancerIntervalleRefresh() {
+      this.intervalSubscription = interval(INTERVALLE_REFRESH).subscribe(() => {
+        this.recupererInfosEquipes();
+      });
+    }
 
 
   recupererInfosEquipes() {
@@ -47,6 +56,10 @@ export class EquipesComponent implements OnInit {
             this.equipes.sort((a, b) => b.score - a.score);
           })
         );
+  }
+
+  ngOnDestroy(): void {
+    this.intervalSubscription?.unsubscribe();
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { InfoMap } from '../../core/model/infoMap';
 import { MondeService } from '../../shared/services/monde.service';
 import { CommonModule } from '@angular/common';
@@ -23,10 +23,11 @@ import { ModalComponent } from './modal/modal.component';
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
 
   app: any;
   readonly TAILLE_TILE = 64;
+  intervalSubscription!: any;
 
   dialog = inject(MatDialog);
 
@@ -94,28 +95,32 @@ export class MapComponent implements OnInit {
         this.initContext();
       });
 
+
     }
 
-    @HostListener('window:wheel', ['$event'])
-    zoom(event: any) {
-      const localX = event.clientX;
-      const localY = event.clientY;
 
-      this.viewportTransform.x += localX - this.previousX;
-      this.viewportTransform.y += localY - this.previousY;
 
-      this.previousX = localX;
-      this.previousY = localY;
 
-      if (event.deltaY < 0) {
-        this.viewportTransform.scale *= 1.5;
-      } else if (event.deltaY > 0) {
-        this.viewportTransform.scale /= 1.5;
-      }
+    // @HostListener('window:wheel', ['$event'])
+    // zoom(event: any) {
+    //   const localX = event.clientX;
+    //   const localY = event.clientY;
 
-      this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
-      // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
-    }
+    //   this.viewportTransform.x += localX - this.previousX;
+    //   this.viewportTransform.y += localY - this.previousY;
+
+    //   this.previousX = localX;
+    //   this.previousY = localY;
+
+    //   if (event.deltaY < 0) {
+    //     this.viewportTransform.scale *= 1.5;
+    //   } else if (event.deltaY > 0) {
+    //     this.viewportTransform.scale /= 1.5;
+    //   }
+
+    //   this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
+    //   // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
+    // }
 
 
 
@@ -141,7 +146,7 @@ export class MapComponent implements OnInit {
             })
           ).subscribe(
             () => {
-              interval(INTERVALLE_REFRESH).pipe(
+              this.intervalSubscription = interval(INTERVALLE_REFRESH).pipe(
                 tap(_ => {
                   this.afficherMap();
                 })
@@ -278,4 +283,9 @@ export class MapComponent implements OnInit {
               });
             }
 
+
+
+    ngOnDestroy(): void {
+      this.intervalSubscription?.unsubscribe();
+    }
 }

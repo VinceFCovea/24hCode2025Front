@@ -1,24 +1,14 @@
-.header {
+.ressources {
   display: flex;
-  font-size: 3rem;
-  color: var(--gray-900);
-  font-weight: 500;
-  line-height: 100%;
-  letter-spacing: -0.125rem;
-  margin: 0;
-  font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2%;
-}
+  margin-bottom: 2%;
 
+}
 
 .ressources-header{
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1%;
   font-size: 1.125rem;
   font-weight: 500;
   margin-top: 1%;
@@ -26,11 +16,8 @@
 
 .ressources {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 10px;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }
 
 .card {
@@ -63,9 +50,4 @@
 .negative {
   color: red;
   font-weight: bold;
-}
-
-.logo {
-  display: flex;
-  justify-self: center;
 }
