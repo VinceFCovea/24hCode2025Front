@@ -1,3 +1,7 @@
+:host {
+  width: 100%;
+}
+
 .equipes {
     display: grid;
     grid-template-columns: repeat(5, 1fr);

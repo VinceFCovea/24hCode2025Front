@@ -1,3 +1,7 @@
+:host {
+  width: 100%;
+}
+
 .ressources {
   display: flex;
   margin-bottom: 2%;
