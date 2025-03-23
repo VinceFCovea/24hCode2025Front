@@ -1,3 +1,4 @@
+<p>{{infoMap.length}} batiments</p>
 <div class="batiments" *ngIf="infoMap && infoMap.length >0">
     <div class="card"  *ngFor="let caseMap of infoMap">
       <h3>{{ caseMap.batiment_construit?.detailBatiment?.type }}</h3>
