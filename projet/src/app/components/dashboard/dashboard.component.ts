@@ -1,12 +1,12 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { VillageoisComponent } from "./villageois/villageois.component";
 import { BatimentsComponent } from "./batiments/batiments.component";
 import { EquipeRessource } from "../../core/model/equipeRessource";
 import { EquipesService } from "../../shared/services/equipes.service";
 import { DemandeAction } from "../../core/model/demandeAction";
-import { tap } from "rxjs";
-import { NOTRE_ID_EQUIPE } from "../../core/constants/core.constants";
+import { Observable, tap, interval, switchMap } from "rxjs";
+import { INTERVALLE_REFRESH, NOTRE_ID_EQUIPE } from "../../core/constants/core.constants";
 import { NomAction } from "../../core/model/nomAction";
 import { EquipesComponent } from "./equipes/equipes.component";
 
@@ -17,7 +17,7 @@ import { EquipesComponent } from "./equipes/equipes.component";
   styleUrl: './dashboard.component.css',
   standalone: true
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, AfterViewInit {
 
   data!: string;
   ressources!: Array<EquipeRessource>;
@@ -49,8 +49,25 @@ export class DashboardComponent {
 
     ngOnInit(): void {
 
-      this.recupererInfosResources().subscribe();
-      this.recupererInfosEquipes().subscribe();
+      this.recupererInfosResources();
+
+      // interval(1000).pipe(
+      //   tap(_ => {
+      //     console.log('plop');
+      //     this.recupererInfosResources();
+      //   })
+      // ).subscribe();
+
+      // interval(1000).pipe(
+      //   tap(() => {
+      //     console.log('plop');
+      //   })).subscribe();
+
+      // interval(1000).pipe(
+      //   switchMap(_ => {
+      //     return this.recupererInfosResources()
+      //   })
+      // ).subscribe();
 
       // interval(this.INTERVALLE_REFRESH).pipe(
       //   tap(i => console.log(i))).subscribe();
@@ -77,13 +94,8 @@ export class DashboardComponent {
 
     }
 
-    recupererInfosEquipes() {
-      return this.equipeService.recupererEquipes().pipe(
-        tap(equipes => {
-          this.equipes = equipes.map((equipe, index) => {return {id: equipe.idEquipe, nom: `${equipe.nom} [${equipe.type}]`, color: this.couleurs[index], score: equipe?.ressources?.find(res => res.ressource.nom === 'POINT')?.quantite}});
-          this.equipes.sort((a, b) => b.score - a.score);
-        })
-      );
+    ngAfterViewInit(): void {
+      // interval(4000).subscribe();
     }
 
     recupererInfosResources() {
@@ -92,8 +104,15 @@ export class DashboardComponent {
         (equipe) => {
           this.data = equipe.nom;
           this.ressources = equipe.ressources!;
+          this.ressources.sort((a, b) => {
+            if (a.ressource.nom < b.ressource.nom) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
         }
-      ));
+      )).subscribe();
     }
 
 

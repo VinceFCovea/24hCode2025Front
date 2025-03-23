@@ -94,28 +94,32 @@ export class MapComponent implements OnInit {
         this.initContext();
       });
 
+
     }
 
-    @HostListener('window:wheel', ['$event'])
-    zoom(event: any) {
-      const localX = event.clientX;
-      const localY = event.clientY;
 
-      this.viewportTransform.x += localX - this.previousX;
-      this.viewportTransform.y += localY - this.previousY;
 
-      this.previousX = localX;
-      this.previousY = localY;
 
-      if (event.deltaY < 0) {
-        this.viewportTransform.scale *= 1.5;
-      } else if (event.deltaY > 0) {
-        this.viewportTransform.scale /= 1.5;
-      }
+    // @HostListener('window:wheel', ['$event'])
+    // zoom(event: any) {
+    //   const localX = event.clientX;
+    //   const localY = event.clientY;
 
-      this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
-      // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
-    }
+    //   this.viewportTransform.x += localX - this.previousX;
+    //   this.viewportTransform.y += localY - this.previousY;
+
+    //   this.previousX = localX;
+    //   this.previousY = localY;
+
+    //   if (event.deltaY < 0) {
+    //     this.viewportTransform.scale *= 1.5;
+    //   } else if (event.deltaY > 0) {
+    //     this.viewportTransform.scale /= 1.5;
+    //   }
+
+    //   this.app.canvas.style.transform = `scale(${this.viewportTransform.scale})`;
+    //   // setTransform(this.viewportTransform.scale, 0, 0, this.viewportTransform.scale, this.viewportTransform.x, this.viewportTransform.y);
+    // }
 
 
 
