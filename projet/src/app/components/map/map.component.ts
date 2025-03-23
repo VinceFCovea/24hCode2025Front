@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { InfoMap } from '../../core/model/infoMap';
 import { MondeService } from '../../shared/services/monde.service';
 import { CommonModule } from '@angular/common';
@@ -23,10 +23,11 @@ import { ModalComponent } from './modal/modal.component';
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
 
   app: any;
   readonly TAILLE_TILE = 64;
+  intervalSubscription!: any;
 
   dialog = inject(MatDialog);
 
@@ -145,7 +146,7 @@ export class MapComponent implements OnInit {
             })
           ).subscribe(
             () => {
-              interval(INTERVALLE_REFRESH).pipe(
+              this.intervalSubscription = interval(INTERVALLE_REFRESH).pipe(
                 tap(_ => {
                   this.afficherMap();
                 })
@@ -282,4 +283,9 @@ export class MapComponent implements OnInit {
               });
             }
 
+
+
+    ngOnDestroy(): void {
+      this.intervalSubscription?.unsubscribe();
+    }
 }

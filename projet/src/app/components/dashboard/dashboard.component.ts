@@ -1,11 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { VillageoisComponent } from "./villageois/villageois.component";
 import { BatimentsComponent } from "./batiments/batiments.component";
 import { EquipeRessource } from "../../core/model/equipeRessource";
 import { EquipesService } from "../../shared/services/equipes.service";
 import { DemandeAction } from "../../core/model/demandeAction";
-import { Observable, tap, interval, switchMap } from "rxjs";
+import { tap, interval } from "rxjs";
 import { INTERVALLE_REFRESH, NOTRE_ID_EQUIPE } from "../../core/constants/core.constants";
 import { NomAction } from "../../core/model/nomAction";
 import { EquipesComponent } from "./equipes/equipes.component";
@@ -17,31 +17,11 @@ import { EquipesComponent } from "./equipes/equipes.component";
   styleUrl: './dashboard.component.css',
   standalone: true
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   data!: string;
   ressources!: Array<EquipeRessource>;
-
-  equipes: any[] = [];
-
-  couleurs = [
-    '#561ED3',
-    '#8ABC88',
-    '#A08ADF',
-    '#1C21D8',
-    '#92BC9D',
-    '#771ABA',
-    '#ED2189',
-    '#245B82',
-    '#730F74',
-    '#0ADB5B',
-    '#23E77F',
-    '#348579',
-    '#9C13E0',
-    '#CD6781',
-    '#3F24A0',
-    '#204509'
-  ];
+  intervalSubscription!: any;
 
   constructor(
     private readonly equipeService: EquipesService
@@ -50,6 +30,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
 
       this.recupererInfosResources();
+
+      this.lancerIntervalleRefresh();
 
       // interval(1000).pipe(
       //   tap(_ => {
@@ -94,8 +76,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     }
 
-    ngAfterViewInit(): void {
-      // interval(4000).subscribe();
+    lancerIntervalleRefresh() {
+      this.intervalSubscription = interval(INTERVALLE_REFRESH).subscribe(() => {
+        this.recupererInfosResources();
+      });
     }
 
     recupererInfosResources() {
@@ -113,6 +97,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           });
         }
       )).subscribe();
+    }
+
+    ngOnDestroy(): void {
+      this.intervalSubscription?.unsubscribe();
     }
 
 
